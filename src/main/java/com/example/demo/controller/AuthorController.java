@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin
 @RestController
 @RequestMapping(path = "api/v1/authors")
 public class AuthorController {
@@ -56,8 +57,8 @@ public class AuthorController {
 
     @DeleteMapping("{id}")
     public ResponseEntity<Object> deleteAuthor(@PathVariable Long id) {
-        Author authorDeleted = authorService.deleteAuthor(id);
+        authorService.deleteAuthor(id);
         String successMessage = MessageFactory.successOperationMessage("Author", "deleted");
-        return ResponseHandler.generateResponse(successMessage, HttpStatus.OK, authorDeleted);
+        return ResponseHandler.generateResponse(successMessage, HttpStatus.OK);
     }
 }

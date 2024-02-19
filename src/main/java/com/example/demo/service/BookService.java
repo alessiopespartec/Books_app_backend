@@ -64,10 +64,8 @@ public class BookService {
         return bookRepository.save(bookToUpdate);
     }
 
-    public Book deleteBook(Long id) {
-        Book bookToDelete = findBookById(id);
-        bookRepository.delete(bookToDelete);
-        return bookToDelete;
+    public void deleteBook(Long id) {
+        bookRepository.delete(findBookById(id));
     }
 
     private Book findBookById(Long id) {

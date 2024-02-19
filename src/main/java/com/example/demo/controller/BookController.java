@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin
 @RestController
 @RequestMapping(path = "api/v1/books")
 public class BookController {
@@ -38,7 +39,7 @@ public class BookController {
     public ResponseEntity<Object> getBook(@PathVariable Long id) {
         Book book = bookService.getBook(id);
         String successMessage = MessageFactory.successOperationMessage("Book", "retrieved");
-        return ResponseHandler.generateResponse(successMessage, HttpStatus.FOUND, book);
+        return ResponseHandler.generateResponse(successMessage, HttpStatus.OK, book);
     }
 
     @PostMapping
@@ -57,8 +58,8 @@ public class BookController {
 
     @DeleteMapping("{id}")
     public ResponseEntity<Object> deleteBook(@PathVariable Long id){
-        Book bookDeleted = bookService.deleteBook(id);
+        bookService.deleteBook(id);
         String successMessage = MessageFactory.successOperationMessage("Book", "deleted");
-        return ResponseHandler.generateResponse(successMessage, HttpStatus.OK, bookDeleted);
+        return ResponseHandler.generateResponse(successMessage, HttpStatus.OK);
     }
 }

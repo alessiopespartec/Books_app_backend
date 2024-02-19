@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin
 @RestController
 @RequestMapping(path = "api/v1/publishers")
 public class PublisherController {
@@ -56,8 +57,8 @@ public class PublisherController {
 
     @DeleteMapping("{id}")
     public ResponseEntity<Object> deletePublisher(@PathVariable Long id) {
-        Publisher publisherDeleted = publisherService.deletePublisher(id);
+        publisherService.deletePublisher(id);
         String successMessage = MessageFactory.successOperationMessage("Publisher", "deleted");
-        return ResponseHandler.generateResponse(successMessage, HttpStatus.OK, publisherDeleted);
+        return ResponseHandler.generateResponse(successMessage, HttpStatus.OK);
     }
 }
