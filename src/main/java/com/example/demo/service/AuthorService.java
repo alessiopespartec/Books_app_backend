@@ -1,12 +1,16 @@
 package com.example.demo.service;
 
 import com.example.demo.entity.Author;
+import com.example.demo.entity.Book;
 import com.example.demo.exceptions.EntityNotFoundException;
 import com.example.demo.repository.AuthorRepository;
+import com.example.demo.repository.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class AuthorService {
@@ -17,6 +21,9 @@ public class AuthorService {
     public AuthorService(AuthorRepository authorRepository) {
         this.authorRepository = authorRepository;
     }
+
+    @Autowired
+    private BookRepository bookRepository;
 
     public List<Author> getAllAuthors() {
         return authorRepository.findAll();
@@ -39,12 +46,22 @@ public class AuthorService {
         return authorRepository.save(authorToUpdate);
     }
 
+    @Transactional
     public void deleteAuthor(Long id) {
-        authorRepository.delete(findAuthorById(id));
+        Author author = findAuthorById(id);
+
+        Set<Book> books = author.getBooks();
+        for (Book book : books) {
+            book.getAuthors().remove(author);
+            bookRepository.save(book);
+        }
+        author.getBooks().clear();
+
+        authorRepository.delete(author);
     }
 
     private Author findAuthorById(Long id) {
         return authorRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Author", id));
+            .orElseThrow(() -> new EntityNotFoundException("Author", id));
     }
 }
