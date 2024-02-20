@@ -50,12 +50,9 @@ public class AuthorService {
     public void deleteAuthor(Long id) {
         Author author = findAuthorById(id);
 
-        Set<Book> books = author.getBooks();
-        for (Book book : books) {
-            book.getAuthors().remove(author);
-            bookRepository.save(book);
+        if (!author.getBooks().isEmpty()) {
+            throw new IllegalStateException("Cannot delete author with associated books");
         }
-        author.getBooks().clear();
 
         authorRepository.delete(author);
     }
