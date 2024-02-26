@@ -1,23 +1,19 @@
 package com.example.demo.controller;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
-@Controller
-@RequestMapping("")
+@RestController
+@RequestMapping("api/v1/demo")
 public class HomeController {
 
-    @ResponseBody
-    @RequestMapping(value = "/",method = RequestMethod.GET)
-    public String index(){
-        return "hello world";
+    @GetMapping
+    public String hello(){
+        return "Hello from Spring Boot and Keycloak";
     }
 
-    @ResponseBody
-    @RequestMapping(value = "/about",method = RequestMethod.GET)
+    @GetMapping("/hello-2")
     public String about(){
-        return "about";
+        return "Hello from Spring Boot and Keycloak - ADMIN";
     }
 }

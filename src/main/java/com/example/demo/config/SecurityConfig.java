@@ -23,16 +23,17 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService(userDetailsService);
-        authProvider.setPasswordEncoder(passwordEncoder());
+        // DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+        // authProvider.setUserDetailsService(userDetailsService);
+        // authProvider.setPasswordEncoder(passwordEncoder());
 
         http
-                .csrf(AbstractHttpConfigurer::disable)
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(auth -> auth
-                        .anyRequest().authenticated())
-                .httpBasic(Customizer.withDefaults());
+            .csrf(AbstractHttpConfigurer::disable)
+            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            .authorizeHttpRequests(auth -> auth.anyRequest().authenticated())
+            //.httpBasic(Customizer.withDefaults())
+            .oauth2ResourceServer(oAuth -> oAuth.jwt(Customizer.withDefaults()))
+        ;
 
         return http.build();
     }
@@ -41,5 +42,4 @@ public class SecurityConfig {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
 }

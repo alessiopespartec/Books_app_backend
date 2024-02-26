@@ -35,6 +35,7 @@ public class UserService {
         return userRepository.save(user);
     }
 
+
     public User updateUser(User user, Long id) {
         User userToUpdate = findUserById(id);
 
@@ -57,6 +58,7 @@ public class UserService {
         return userRepository.save(userToUpdate);
     }
 
+
     public void deleteUser(Long id) {
         userRepository.delete(findUserById(id));
     }
@@ -69,6 +71,7 @@ public class UserService {
         return userRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("User", id));
     }
+
 
     @PostConstruct
     public void createDefaultUser() {
