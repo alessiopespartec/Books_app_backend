@@ -26,6 +26,7 @@ public class BookController {
         this.bookService = bookService;
     }
 
+    @PreAuthorize("hasAuthority('SCOPE_books_read')")
     @GetMapping
     public ResponseEntity<Object> getAllBooks() {
         List<Book> books = bookService.getAllBooks();
@@ -36,6 +37,7 @@ public class BookController {
         return ResponseHandler.generateResponse(successMessage, HttpStatus.OK, books);
     }
 
+    @PreAuthorize("hasAuthority('SCOPE_books_read')")
     @GetMapping("{id}")
     public ResponseEntity<Object> getBook(@PathVariable Long id) {
         Book book = bookService.getBook(id);
@@ -43,6 +45,7 @@ public class BookController {
         return ResponseHandler.generateResponse(successMessage, HttpStatus.OK, book);
     }
 
+    @PreAuthorize("hasAuthority('SCOPE_books_create')")
     @PostMapping
     public ResponseEntity<Object> addBook(@Valid @RequestBody Book book) {
         Book bookCreated = bookService.addBook(book);
@@ -50,6 +53,7 @@ public class BookController {
         return ResponseHandler.generateResponse(successMessage, HttpStatus.CREATED, bookCreated);
     }
 
+    @PreAuthorize("hasAuthority('SCOPE_books_update')")
     @PutMapping("{id}")
     public ResponseEntity<Object> updateBook(@Valid @RequestBody Book book, @PathVariable Long id) {
         Book bookUpdated = bookService.updateBook(book, id);
@@ -57,6 +61,7 @@ public class BookController {
         return ResponseHandler.generateResponse(successMessage, HttpStatus.OK, bookUpdated);
     }
 
+    @PreAuthorize("hasAuthority('SCOPE_books_delete')")
     @DeleteMapping("{id}")
     public ResponseEntity<Object> deleteBook(@PathVariable Long id){
         bookService.deleteBook(id);

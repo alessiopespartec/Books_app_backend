@@ -9,6 +9,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,6 +25,7 @@ public class PublisherController {
         this.publisherService = publisherService;
     }
 
+    @PreAuthorize("hasAuthority('SCOPE_publishers_read')")
     @GetMapping
     public ResponseEntity<Object> getAllPublishers() {
         List<Publisher> publishers = publisherService.getAllPublishers();
@@ -34,6 +36,7 @@ public class PublisherController {
         return ResponseHandler.generateResponse(successMessage, HttpStatus.OK, publishers);
     }
 
+    @PreAuthorize("hasAuthority('SCOPE_publishers_read')")
     @GetMapping("{id}")
     public ResponseEntity<Object> getPublisher(@PathVariable Long id) {
         Publisher publisher = publisherService.getPublisher(id);
@@ -41,6 +44,7 @@ public class PublisherController {
         return ResponseHandler.generateResponse(successMessage, HttpStatus.OK, publisher);
     }
 
+    @PreAuthorize("hasAuthority('SCOPE_publishers_create')")
     @PostMapping
     public ResponseEntity<Object> addPublisher(@Valid @RequestBody Publisher publisher) {
         Publisher publisherCreated = publisherService.addPublisher(publisher);
@@ -48,6 +52,7 @@ public class PublisherController {
         return ResponseHandler.generateResponse(successMessage, HttpStatus.CREATED, publisherCreated);
     }
 
+    @PreAuthorize("hasAuthority('SCOPE_publishers_update')")
     @PutMapping("{id}")
     public ResponseEntity<Object> updatePublisher(@Valid @RequestBody Publisher publisher, @PathVariable Long id) {
         Publisher publisherUpdated= publisherService.updatePublisher(publisher, id);
@@ -55,6 +60,7 @@ public class PublisherController {
         return ResponseHandler.generateResponse(successMessage, HttpStatus.OK, publisherUpdated);
     }
 
+    @PreAuthorize("hasAuthority('SCOPE_publishers_delete')")
     @DeleteMapping("{id}")
     public ResponseEntity<Object> deletePublisher(@PathVariable Long id) {
         publisherService.deletePublisher(id);
