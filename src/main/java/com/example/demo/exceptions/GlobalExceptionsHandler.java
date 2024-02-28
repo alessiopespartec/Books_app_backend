@@ -48,4 +48,6 @@ public class GlobalExceptionsHandler {
     public ResponseEntity<Object> handleGenericException(Exception e) {
         return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, null);
     }
+
+    // TODO: Gestire l'eccezione di non Autorizzato (da scope)
 }
