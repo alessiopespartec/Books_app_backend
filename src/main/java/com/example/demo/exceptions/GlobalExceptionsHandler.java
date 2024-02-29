@@ -8,7 +8,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
-
+import org.springframework.security.access.AccessDeniedException;
 import java.util.stream.Collectors;
 
 @ControllerAdvice
@@ -44,10 +44,13 @@ public class GlobalExceptionsHandler {
         return ResponseHandler.generateResponse(errorMessage, HttpStatus.BAD_REQUEST, null);
     }
 
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<Object> handleAccessDenied(AccessDeniedException e) {
+        return ResponseHandler.generateResponse("Access denied - your token must have the appropriate scopes for the request.", HttpStatus.FORBIDDEN, null);
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Object> handleGenericException(Exception e) {
         return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, null);
     }
-
-    // TODO: Gestire l'eccezione di non Autorizzato (da scope)
 }
